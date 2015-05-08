@@ -1,5 +1,5 @@
 from plotter import Plotter
-from interpret import interpreter, evaluater, diffeqsolver
+from interpret import interpreter, evaluater, diffeqsolver, gen_code
 from PyQt4 import QtGui, QtCore
 import sys
 from numpy import *
@@ -21,7 +21,7 @@ class ApplicationWindow(QtGui.QMainWindow):
         self.main_widget = QtGui.QWidget(self)
 
         self.grid = QtGui.QGridLayout(self.main_widget) #setting layout type
-        self.grid.setColumnMinimumWidth(4,100)
+        self.grid.setColumnMinimumWidth(4,200)
         self.grid.setSpacing(10)
 
         self.graph = Plotter(self.main_widget)
@@ -89,6 +89,8 @@ class ApplicationWindow(QtGui.QMainWindow):
                 self.text_box.append("Error")
             self.graph.make_graph(x,y)
             self.graph.draw()
+            code = gen_code(self.val_range, self.fn, self.mod_list,values)
+            self.text_box.append(code)
 
         elif len(self.mod_list) == 0:
             self.grid.setColumnMinimumWidth(2,10)
@@ -99,7 +101,9 @@ class ApplicationWindow(QtGui.QMainWindow):
             if y == "Error":
                 self.text_box.append("Error")
             self.graph.make_graph(x,y)
-            self.graph.draw()
+            self.graph.draw()      
+            code = gen_code(self.val_range,self.fn)
+            self.text_box.append(code)
 
     # @QtCore.pyqtSlot(int)
     def plot_w_slider(self):
@@ -110,6 +114,10 @@ class ApplicationWindow(QtGui.QMainWindow):
             self.text_box.append("Error")
         self.graph.make_graph(x,y)
         self.graph.draw()
+
+        code = gen_code(self.val_range, self.fn, self.mod_list,values)
+        self.text_box.append(code)
+
 
 
     @QtCore.pyqtSlot(int)

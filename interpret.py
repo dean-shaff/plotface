@@ -74,7 +74,7 @@ def interpreter(string):
 	if 'e{0}p' in fn:
 		fn = fn.replace('e{0}p','exp')
 
-	print(fn)
+	# print(fn)
 	return val_range, fn, mod_list, method
 
 def evaluater(x_val_range, fn, mod_list=None, mod_val=None, increment=0.1):
@@ -97,6 +97,38 @@ def evaluater(x_val_range, fn, mod_list=None, mod_val=None, increment=0.1):
 
 def diffeqsolver(x_val_range, fn, mod_list=None, mod_val=None, increment = 0.1):
 	pass
+
+def gen_code(x_val_range, fn, mod_list=None, mod_val=None, increment=0.1):
+
+	code = "\n\nfrom numpy import *\n"
+	code += "import matplotlib.pyplot as plt\n\n"
+	code += "def f(x,*args):\n\t"
+
+	if mod_list != None:
+		for mod in mod_list:
+			code += "{} ".format(mod)
+		code += "= args\n\t"
+	code += "return "
+	code += fn.replace("{0}","x")
+	code += "\n\n"
+	code += "x = arange({},{},{})\n".format(x_val_range[0],x_val_range[1],increment)
+	code += "y = f(x,"
+
+	if mod_list != None:
+		for index in mod_list:
+			code += "{},".format(mod_val[index])
+	code += ")\n\n"
+	code += "fig = plt.figure(figsize=(16,9))\nax = fig.add_subplot(111)"
+	code += "ax.plot(x,y)"
+	code += "plt.show()"
+
+	return code
+
+
+
+
+
+
 # print(evaluater([-10,10],"sin(a*{0})",['a'],[3]))
 # print(interpreter("plot f(x)=cos(x)*sin(x) from -10 to 10"))
 # print(interpreter("x**2"))
