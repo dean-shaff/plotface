@@ -4,7 +4,6 @@ from PyQt4 import QtGui, QtCore
 import sys
 from numpy import *
 
-
 class ApplicationWindow(QtGui.QMainWindow):
 
     def __init__(self):
@@ -91,6 +90,7 @@ class ApplicationWindow(QtGui.QMainWindow):
             self.graph.draw()
             code = gen_code(self.val_range, self.fn, self.mod_list,values)
             self.text_box.append(code)
+            self.code = code 
 
         elif len(self.mod_list) == 0:
             self.grid.setColumnMinimumWidth(2,10)
@@ -104,6 +104,18 @@ class ApplicationWindow(QtGui.QMainWindow):
             self.graph.draw()      
             code = gen_code(self.val_range,self.fn)
             self.text_box.append(code)
+            self.code = code 
+
+        self.save_code_button = QtGui.QPushButton('Save Code')
+        self.save_code_button.clicked.connect(self.save_code)
+        self.grid.addWidget(self.save_code_button,0,4,1,2)
+
+    def save_code(self):
+
+        with open("example.py",'w') as writer:
+            writer.write(self.code)
+
+        self.text_box.append("\nCode saved successfully!\n")
 
     # @QtCore.pyqtSlot(int)
     def plot_w_slider(self):
@@ -117,7 +129,7 @@ class ApplicationWindow(QtGui.QMainWindow):
 
         code = gen_code(self.val_range, self.fn, self.mod_list,values)
         self.text_box.append(code)
-
+        self.code = code 
 
 
     @QtCore.pyqtSlot(int)

@@ -118,8 +118,8 @@ def gen_code(x_val_range, fn, mod_list=None, mod_val=None, increment=0.1):
 		for index in mod_list:
 			code += "{},".format(mod_val[index])
 	code += ")\n\n"
-	code += "fig = plt.figure(figsize=(16,9))\nax = fig.add_subplot(111)"
-	code += "ax.plot(x,y)"
+	code += "fig = plt.figure(figsize=(16,9))\nax = fig.add_subplot(111)\n"
+	code += "ax.plot(x,y)\n"
 	code += "plt.show()"
 
 	return code
